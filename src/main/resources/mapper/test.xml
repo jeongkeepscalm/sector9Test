@@ -3,10 +3,40 @@
 
 <mapper namespace="com.example.sector9test.a.UserMapper">
 
+    <resultMap id="user" type="com.example.sector9test.a.User">
+        <result property="userId" column="userId"/>
+        <result property="password" column="password"/>
+        <result property="userType" column="userType"/>
+    </resultMap>
+
     <select id="existsByUserId" resultType="java.lang.Boolean">
         SELECT CASE WHEN COUNT(*) = 1 THEN 1 ELSE 0 END as count
         FROM user
         WHERE user_id = #{userId}
     </select>
+
+    <select id="selectUserByUserId" resultMap="user">
+        select user_id              as userId
+             , password             as password
+             , user_type_id         as userType
+        from user
+        WHERE 1 = 1
+          AND USER_ID =  #{userId}
+    </select>
+
+    <select id="selectAccessMenus" resultMap="user">
+        SELECT
+            d.user_type_id              as userType
+             , b.menu_auth_name         as menuAuthName
+        FROM menu a
+                 INNER JOIN menu_authority b ON b.menu_id = a.menu_id
+                 INNER JOIN user_type_menu_authority c ON c.menu_authority_id = b.menu_authority_id
+                 INNER JOIN user_type_auth d ON d.user_type_id = c.user_type_id
+                 INNER JOIN user e ON e.user_type_id = d.user_type_id
+        WHERE 1 = 1
+          AND e.USER_ID =  #{userId}
+          and e.password = #{password}
+    </select>
+
 
 </mapper>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>login page</title>
+</head>
+
+<form th:method="POST" th:action="@{/auth/sign-in}">
+    <input type="text" class="form-control" aria-describedby="emailHelp" name="userId" placeholder="Enter email">
+    <input type="password" class="form-control" name="password" placeholder="Password">
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<body>
+</body>
+</html>

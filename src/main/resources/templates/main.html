@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>main</title>
+</head>
+
+<body>
+
+<th:block th:sec:authorize="isAuthenticated()">
+    <span th:sec:authentication="principal"></span>
+    <li th:each="authority : ${#authentication.getAuthorities()}">
+        <span th:text="${authority.authority}"></span>
+    </li>
+</th:block>
+
+<form th:action="@{/api/auth/log-out}" th:method="GET">
+    <button type="submit" class="btn btn-primary">Log out</button>
+</form>
+
+
+</body>
+</html>
