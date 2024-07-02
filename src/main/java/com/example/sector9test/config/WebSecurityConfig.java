@@ -39,7 +39,6 @@ public class WebSecurityConfig {
   private void matcher() throws Exception {
     httpSecurity
             .authorizeHttpRequests(requests -> requests
-                    .requestMatchers("/auth").authenticated()
                     .anyRequest().permitAll()
             );
   }
@@ -51,9 +50,11 @@ public class WebSecurityConfig {
     // logOutConfig();
 
     // AuthenticationProvider 인터페이스를 구현한 customAuthenticationProvider 를 주입한다.
-    return httpSecurity
-            .authenticationProvider(customAuthenticationProvider) // 자체 로그인 인증 공급자 설정
-            .build();
+//    return httpSecurity
+//            .authenticationProvider(customAuthenticationProvider) // 자체 로그인 인증 공급자 설정
+//            .build();
+
+    return httpSecurity.build();
   }
 
 }
