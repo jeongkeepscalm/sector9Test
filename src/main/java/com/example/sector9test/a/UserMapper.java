@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface UserMapper {
 
   boolean existsByUserId(@Param("userId") String userId);
-
   User selectUserByUserId(@Param("userId") String userId);
   List<User> selectAccessMenus(@Param("userId") String userId, @Param("password") String password);
 

@@ -3,6 +3,8 @@ package com.example.sector9test.a;
 
 import com.example.sector9test.a.res.ResponseCode;
 import com.example.sector9test.a.res.ResponseMessage;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +25,7 @@ public class AuthServiceImpl implements AuthService {
   private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
   @Override
-  public ResponseDto signIn(SignInRequestDto dto) {
+  public ResponseDto signIn(SignInRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
 
     try {
 
@@ -30,11 +33,9 @@ public class AuthServiceImpl implements AuthService {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUserId(), dto.getPassword()));
       SecurityContext context = SecurityContextHolder.getContext();
       context.setAuthentication(authentication);
-//
-//      log.info("authenticationManager: {}", authenticationManager);
-//      log.info("authentication: {}", authenticationManager);
-//      log.info("authenticationManager: {}", authenticationManager);
-//      log.info("authenticationManager: {}", authenticationManager);
+
+      HttpSessionSecurityContextRepository secRepo = new HttpSessionSecurityContextRepository();
+      secRepo.saveContext(context, request, response);
 
     } catch (Exception e) {
       log.error(":: failed sign in");

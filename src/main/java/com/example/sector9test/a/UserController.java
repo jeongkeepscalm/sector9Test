@@ -1,7 +1,7 @@
 package com.example.sector9test.a;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,6 @@ import java.util.List;
 @RequestMapping("/auth")
 public class UserController {
 
-  private final ObjectMapper objectMapper;
   private final AuthService authService;
 
   @GetMapping(path = "/loginPage")
@@ -30,38 +29,33 @@ public class UserController {
   }
 
   @PostMapping(path = "/sign-in")
-  public String signIn(@ModelAttribute("signInRequestDto") SignInRequestDto dto, HttpServletRequest request) {
+  public String signInMethod(@ModelAttribute("signInRequestDto") SignInRequestDto dto, HttpServletRequest request, HttpServletResponse response) {
 
-    authService.signIn(dto);
-//
-//    HttpSession session = request.getSession();
-//    List<String> accessMenuList = (List<String>) session.getAttribute("accessMenuList");
-//
-//    log.info("accessMenuList: {}", accessMenuList);
-//
-//    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//    Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-//    GrantedAuthority auth = iter.next();
-//    String role = auth.getAuthority();
-//
-//    log.info("role: {}", role);
+    authService.signIn(dto, request, response);
 
+    HttpSession session = request.getSession();
+    List<String> accessMenuList = (List<String>) session.getAttribute("accessMenuList");
+
+    log.info("accessMenuList: {}", accessMenuList);
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+    Iterator<? extends GrantedAuthority> iter = authorities.iterator();
+    GrantedAuthority auth = iter.next();
+    String role = auth.getAuthority();
+
+    log.info("role: {}", role);
 
     return "/main";
   }
 
   @GetMapping
   @ResponseBody
-  public String test (){
-
+  public String test() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    Object a =  authentication.getPrincipal();
-    log.info("principal = {}",a);
+    Object principal =  authentication.getPrincipal();
+    log.info("principal = {}", principal);
     return "test";
-
   }
-
 
 }
