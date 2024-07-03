@@ -30,7 +30,6 @@ public class UserService implements UserDetailsService {
       List<String> menuList = userMapper.selectAccessMenus(user.getUserId(), user.getPassword());
       user.setMenuAuthorityList(menuList);
       return user;
-
     } else {
       log.info("this user doesn't exists");
       throw new AuthBusinessException(ResponseMessage.SIGN_IN_FAIL);

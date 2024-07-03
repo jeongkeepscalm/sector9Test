@@ -42,7 +42,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     log.info("authentication.getName(): {}", name);                         // 입력한 id
     log.info("authentication.getCredentials().toString(): {}", password);   // 입력한 password
 
-
     UserDetails user = userService.loadUserByUsername(name);
 
     // 입력한 비밀번호와 데이터의 비밀번호가 같다면,
