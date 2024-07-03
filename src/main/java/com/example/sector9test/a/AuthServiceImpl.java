@@ -34,8 +34,8 @@ public class AuthServiceImpl implements AuthService {
       SecurityContext context = SecurityContextHolder.getContext();
       context.setAuthentication(authentication);
 
-      HttpSessionSecurityContextRepository secRepo = new HttpSessionSecurityContextRepository();
-      secRepo.saveContext(context, request, response);
+//      HttpSessionSecurityContextRepository secRepo = new HttpSessionSecurityContextRepository();
+//      secRepo.saveContext(context, request, response);
 
     } catch (Exception e) {
       log.error(":: failed sign in");
