@@ -1,8 +1,11 @@
-package com.example.sector9test.a;
+package com.example.sector9test.a.service;
 
 
+import com.example.sector9test.a.exception.AuthBusinessException;
+import com.example.sector9test.a.exception.ResponseDto;
 import com.example.sector9test.a.res.ResponseCode;
 import com.example.sector9test.a.res.ResponseMessage;
+import com.example.sector9test.a.dto.SignInRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +24,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-  private final UserMapper userMapper;
   private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
   @Override
@@ -34,8 +36,8 @@ public class AuthServiceImpl implements AuthService {
       SecurityContext context = SecurityContextHolder.getContext();
       context.setAuthentication(authentication);
 
-//      HttpSessionSecurityContextRepository secRepo = new HttpSessionSecurityContextRepository();
-//      secRepo.saveContext(context, request, response);
+      HttpSessionSecurityContextRepository secRepo = new HttpSessionSecurityContextRepository();
+      secRepo.saveContext(context, request, response);
 
     } catch (Exception e) {
       log.error(":: failed sign in");

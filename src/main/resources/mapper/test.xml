@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.sector9test.a.UserMapper">
+<mapper namespace="com.example.sector9test.a.mapper.UserMapper">
 
-    <resultMap id="user" type="com.example.sector9test.a.User">
+    <resultMap id="user" type="com.example.sector9test.a.security.User">
         <result property="userId" column="userId"/>
         <result property="password" column="password"/>
         <result property="userType" column="userType"/>
@@ -24,10 +24,9 @@
           AND USER_ID =  #{userId}
     </select>
 
-    <select id="selectAccessMenus" resultMap="user">
+    <select id="selectAccessMenus" resultType="java.lang.String">
         SELECT
-            d.user_type_id              as userType
-             , b.menu_auth_name         as menuAuthName
+             b.menu_auth_name         as menuName
         FROM menu a
                  INNER JOIN menu_authority b ON b.menu_id = a.menu_id
                  INNER JOIN user_type_menu_authority c ON c.menu_authority_id = b.menu_authority_id

@@ -1,4 +1,4 @@
-package com.example.sector9test.a;
+package com.example.sector9test.a.security;
 
 
 import lombok.Data;
@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @ToString
@@ -20,17 +21,13 @@ public class User implements UserDetails {
   private String userId;
   private String password;
   private String userType;
-  private String menuAuthName;
+  private List<String> menuAuthorityList;
 
-  // userType 에 따른 메뉴 crud 권한확인
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(userType));
-  }
-
-  @Override
-  public String getPassword() {
-    return this.password;
+    return this.getMenuAuthorityList().stream()
+            .map(v -> new SimpleGrantedAuthority(v))
+            .collect(Collectors.toList());
   }
 
   @Override

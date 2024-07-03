@@ -1,5 +1,7 @@
 package com.example.sector9test.a;
 
+import com.example.sector9test.a.security.User;
+import com.example.sector9test.a.mapper.UserMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,6 @@ public class MapperTest {
     Assertions.assertThat(b).isTrue();
   }
 
-  @Test
-  void fds() {
-    List<User> menus = mapper.selectAccessMenus("ojg", "ojg123");
-    Assertions.assertThat(menus).hasSize(4);
-    menus.stream().forEach(user -> {
-      System.out.println("user access menu:" + user.getMenuAuthName());
-    });
-  }
 
   @Test
   void ttt () {

@@ -1,5 +1,7 @@
-package com.example.sector9test.a;
+package com.example.sector9test.a.service;
 
+import com.example.sector9test.a.exception.ResponseDto;
+import com.example.sector9test.a.dto.SignInRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

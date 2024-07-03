@@ -1,6 +1,5 @@
 package com.example.sector9test.a.exception;
 
-import com.example.sector9test.a.ErrorCode;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;

@@ -1,8 +1,5 @@
 package com.example.sector9test.a.exception;
 
-import com.example.sector9test.a.AuthBusinessException;
-import com.example.sector9test.a.BusinessException;
-import com.example.sector9test.a.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;

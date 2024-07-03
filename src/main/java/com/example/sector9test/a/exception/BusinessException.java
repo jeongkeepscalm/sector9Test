@@ -1,4 +1,4 @@
-package com.example.sector9test.a;
+package com.example.sector9test.a.exception;
 
 import lombok.Getter;
 

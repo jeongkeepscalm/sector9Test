@@ -1,4 +1,4 @@
-package com.example.sector9test.a;
+package com.example.sector9test.a.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,17 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/menu-access-test")
+@RequestMapping("/api")
 public class MenuAccessTestController {
 
   @GetMapping("/a")
-  @PreAuthorize("hasAnyAuthority('A')")
+  @PreAuthorize("hasAnyAuthority('회원관리_R')")
   public ResponseEntity<String> a() {
     return new ResponseEntity<>("success", HttpStatus.OK);
   }
 
   @GetMapping("/b")
-  @PreAuthorize("hasAnyAuthority('B')")
+  @PreAuthorize("hasAnyAuthority('비회원관리_R')")
   public ResponseEntity<String> b() {
     return new ResponseEntity<>("success", HttpStatus.OK);
   }
