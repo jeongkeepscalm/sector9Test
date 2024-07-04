@@ -27,6 +27,7 @@ public class UserService implements UserDetailsService {
     boolean b = userMapper.existsByUserId(userId);
     if (b) {
       User user = userMapper.selectUserByUserId(userId);
+      // 권한목록을 조회하여 user 인스턴스에 세팅
       List<String> menuList = userMapper.selectAccessMenus(user.getUserId(), user.getPassword());
       user.setMenuAuthorityList(menuList);
       return user;

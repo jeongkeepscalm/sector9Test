@@ -36,8 +36,15 @@ public class AuthServiceImpl implements AuthService {
       SecurityContext context = SecurityContextHolder.getContext();
       context.setAuthentication(authentication);
 
+      /*
+
+      시큐리티 6.1 이후에 formLogin 을 사용하지 않으면 Authentication 객체가 세션에 저장이 되지 않는 문제 발생하여 추가한 코드
+      SecurityFilterChain 에 .httpBasic(Customizer.withDefaults()) 을 추가하여 하위 코드를 주석 처리하였다.
+
       HttpSessionSecurityContextRepository secRepo = new HttpSessionSecurityContextRepository();
       secRepo.saveContext(context, request, response);
+
+      */
 
     } catch (Exception e) {
       log.error(":: failed sign in");

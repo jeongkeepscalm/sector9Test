@@ -32,7 +32,16 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
   private final PasswordEncoder passwordEncoder;        // 빈 등록 후 사용
   private final UserService userService;
 
-
+  /**
+   * 인증 논리 구현
+   *
+   * 인증이 실패하면, AuthenticationException 던진다.
+   * resultType: Authentication
+   * isAuthenticated(): true 반환시 다음으로 넘어간다.
+   *
+   * AuthenticationProvider 에서 Principal, Credential, Authorities 를 세팅해준다.
+   * Authentication auth = new UsernamePasswordAuthenticationToken(Principal, Credential, Authorities);
+   */
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
@@ -44,18 +53,26 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     UserDetails user = userService.loadUserByUsername(name);
 
-    // 입력한 비밀번호와 데이터의 비밀번호가 같다면,
+    // 입력한 비밀번호와 DB 데이터의 비밀번호가 같다면,
     if (passwordEncoder.matches(password, user.getPassword())) {
-
-      // setAccessMenuList(name, password);
-
-      UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
-
-      return usernamePasswordAuthenticationToken;
+      return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());
     } else {
       throw new AuthBusinessException(ResponseMessage.SIGN_IN_FAIL);
     }
 
+  }
+
+  /**
+   * Authentication 형식의 구현 추가
+   *
+   * 자신이 처리할 수 있는 클래스인지 확인 후,
+   * 처리가능하면(true 반환) AuthenticationManager 는 해당 AuthenticationProvider 를 사용하여 인증을 시도한다.
+   *
+   * 해당 코드의 경우, 매개변수로 받은 authentication 클래스가 UsernamePasswordAuthenticationToken 혹은 하위 클래스일 경우 true 를 반환한다.
+   */
+  @Override
+  public boolean supports(Class<?> authentication) {
+    return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
   }
 
   private void setAccessMenuList(String name, String password) {
@@ -72,10 +89,5 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
       session.setAttribute("accessMenuList", collect);
     */
 
-  }
-
-  @Override
-  public boolean supports(Class<?> authentication) {
-    return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
   }
 }

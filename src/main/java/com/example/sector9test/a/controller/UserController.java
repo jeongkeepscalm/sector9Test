@@ -51,13 +51,6 @@ public class UserController {
     return "/main";
   }
 
-  @GetMapping
-  @ResponseBody
-  public String test() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    Object principal =  authentication.getPrincipal();
-    log.info("principal = {}", principal);
-    return "test";
-  }
+
 
 }

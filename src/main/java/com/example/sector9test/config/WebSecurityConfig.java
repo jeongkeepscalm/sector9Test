@@ -1,6 +1,7 @@
 package com.example.sector9test.config;
 
 import com.example.sector9test.a.security.CustomAuthenticationProvider;
+import com.example.sector9test.a.security.CustomEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,9 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.context.DelegatingSecurityContextRepository;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.security.web.context.RequestAttributeSecurityContextRepository;
 
 @Configuration
 @EnableMethodSecurity
@@ -31,17 +29,30 @@ public class WebSecurityConfig {
 
   private void http_auth() throws Exception {
 
-    // 인증된 사용자만 접근 허용
-//    httpSecurity.authorizeHttpRequests((auth) -> auth
-//            .anyRequest().authenticated()
-//    ).httpBasic(Customizer.withDefaults());
+//    httpSecurity.httpBasic(c -> {
+//      c.realmName("other");
+//      c.authenticationEntryPoint(new CustomEntryPoint());
+//    });
+//
+//    httpSecurity.authorizeHttpRequests(auth -> auth.anyRequest().authenticated());
 
 
-      // 모든 사용자 접근 허용
-      httpSecurity
-              .authorizeHttpRequests(requests -> requests
-                      .anyRequest().permitAll());
+    httpSecurity.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+            .httpBasic(Customizer.withDefaults());
 
+
+            /*
+
+            질문. 설정 시 넘어가 지지 않음.
+
+            .formLogin(form -> form
+                    .loginPage("/auth/loginPage")
+                    .loginProcessingUrl("/auth/sign-in")
+                    .defaultSuccessUrl("/main", true)
+                    .failureUrl("/auth/loginPage?error=true")
+                    .permitAll())
+            .csrf(c->c.disable());
+            */
   }
 
   /**
@@ -63,23 +74,22 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain() throws Exception {
 
-    httpSecurity
-            .securityContext(context ->
-                    context.securityContextRepository(
-                            new DelegatingSecurityContextRepository(
-                                    new RequestAttributeSecurityContextRepository(),
-                                    new HttpSessionSecurityContextRepository()
-                            )
-                    )
-            );
-
     http_auth();
     auth_manager_builder();
-
-
 
     return httpSecurity.build();
 
   }
+
+
+  /**
+   *  .httpBasic(Customizer.withDefaults())
+   *    HTTP 기본 인증을 활성화. 활성화 해야 유저 정보가 SecurityContextHolder 에 authentication 인스턴스가 저장된다.
+   *
+   *  httpSecurity.authorizeRequests: 5.4 이전 버전
+   *  httpSecurity.authorizeHttpRequests: 5.4 이후 버전
+   *
+   *
+   */
 
 }
